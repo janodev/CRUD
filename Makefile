@@ -1,10 +1,10 @@
-#!/bin/sh –x
+.PHONY: sourcery format
 
 all:
 	@echo "sourcery - generate files" 
 	@echo "format   - format generated files" 
 
-sourcery:
+sourcery: 
 	@hash sourcery 2>/dev/null || { echo >&2 "sourcery is not installed. Install homebrew, then brew install sourcery."; exit 1; }
 	@sourcery --watch --verbose --sources sources/main/crud/InputActivityEntity.swift --templates sourcery/templates/ --output sourcery/output
 
