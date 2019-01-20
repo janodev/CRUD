@@ -1,0 +1,26 @@
+{% for type in types.implementing.AutogenerateMe %}
+
+import Foundation
+import RealmSwift
+ 
+@objcMembers
+public final class {{type.name}}Object: Object {
+
+    {% for variable in type.storedVariables %}
+    public dynamic var {{variable.name}}: {{variable.typeName}} = ""
+    {% endfor %}
+    
+    public convenience init({% for variable in type.storedVariables %}
+        {{variable.name}}: {{variable.typeName}}{% if forloop.last %}{% else %},{% endif %} 
+    {% endfor %}) {
+        {% for variable in type.storedVariables %}
+        self.{{variable.name}} = {{variable.name}}
+        {% endfor %}
+    }
+    
+    override public static func primaryKey() -> String? {
+        
+        return "id"
+    }
+}
+{% endfor %}

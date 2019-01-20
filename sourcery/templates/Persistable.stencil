@@ -1,0 +1,87 @@
+{% for type in types.implementing.AutogenerateMe %}
+// MARK: {{ type.name }} Equatable
+extension {{type.name}}: Codable, Equatable {
+  
+    {% for variable in type.storedVariables %}
+    public let {{variable.name}}: {{variable.typeName}}
+    {% endfor %}
+  
+    enum CodingKeys: String, CodingKey {
+        {% for variable in type.storedVariables %}
+        case {{variable.name}}
+        {% endfor %}
+    }
+    
+    public init({% for variable in type.storedVariables %}
+        {{variable.name}}: {{variable.typeName}}{% if forloop.last %}{% else %},{% endif %}
+    {% endfor %}) {
+        {% for variable in type.storedVariables %}
+        self.{{variable.name}} = {{variable.name}}
+        {% endfor %}
+    }
+}
+
+extension {{type.name}}: Persistable {
+  
+  public var primaryKey: String? {
+      return "id"
+  }
+  
+  public init(managedObject: {{type.name}}Object) {
+      {% for variable in type.storedVariables %}
+      {{variable.name}} = managedObject.{{variable.name}}
+      {% endfor %}
+  }
+  
+  public func unpersistedManagedObject() -> {{type.name}}Object {
+      let managedObject = {{type.name}}()
+      {% for variable in type.storedVariables %}
+      managedObject.{{variable.name}} = {{variable.name}}
+      {% endfor %}
+      return managedObject
+  }
+
+  public enum PropertyValue: PropertyValueType {
+      {% for variable in type.storedVariables %}
+      case {{variable.name}} ({{variable.typeName}})
+      {% endfor %}
+      
+      public var propertyValuePair: PropertyValuePair {
+          switch self {
+              {% for variable in type.storedVariables %}
+              case .{{variable.name}} (let {{variable.name}}): return ("{{variable.name}}", {{variable.name}} as Any)
+              {% endfor %}
+          }
+      }
+  }
+  
+  public enum Query: QueryType {
+      
+      case primaryKey(Int)
+      
+      public var predicate: NSPredicate? {
+          switch self {
+          case .primaryKey(let primaryKey):
+              return NSPredicate(format: "id == %d", primaryKey)
+          /* other queries */
+          }
+      }
+      
+      public var sortDescriptors: [SortDescriptor] {
+          return []
+      }
+  }
+  
+  public static func containsPrimaryKey(values: [PropertyValue]) -> Bool {
+      
+      return values.contains { prop -> Bool in
+          if case .id(_) = prop {
+              return true
+          }
+          return false
+      }
+  }
+  
+}
+
+{% endfor %}
