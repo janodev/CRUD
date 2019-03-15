@@ -11,6 +11,6 @@ To persist an object:
 As an example, this project provides 
 
 - a sample input file: [InputActivityEntity.swift](https://github.com/j4n0/CRUD/blob/master/sources/main/crud/InputActivityEntity.swift)
-- and two stencil templates: [Object.stencil](https://github.com/j4n0/CRUD/blob/master/sourcery/output/Object.generated.swift), [Persistable.stencil](https://github.com/j4n0/CRUD/blob/master/sourcery/templates/Persistable.stencil). These are written using [Stencil](http://stencil.fuller.li/en/latest/builtins.html#built-in-tags).
+- and two stencil templates: [Object.stencil](https://github.com/j4n0/CRUD/blob/master/sourcery/templates/Object.stencil), [Persistable.stencil](https://github.com/j4n0/CRUD/blob/master/sourcery/templates/Persistable.stencil). These are written using [Stencil](http://stencil.fuller.li/en/latest/builtins.html#built-in-tags).
 
 See the resulting code: [Object.generated.swift](https://github.com/j4n0/CRUD/blob/master/sourcery/output/Object.generated.swift), [Persistable.generated.swift](https://github.com/j4n0/CRUD/blob/master/sourcery/output/Persistable.generated.swift). 
